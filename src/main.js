@@ -1,6 +1,6 @@
 import { LESSONS } from "./lessons.js";
 import { initFirebase, getRoutingPolicy } from "./firebase.js";
-import { initModels, prepareOnDeviceModel, onDeviceAvailable, practiceTurn, deepAnalysis } from "./ai.js";
+import { initModels, prepareOnDeviceModel, onDeviceAvailable, practiceTurn, deepAnalysis, setRoutingPolicy } from "./ai.js";
 import { loadProgress, recordTurn, progressText, loadRemoteProgress } from "./store.js";
 
 const chatEl = document.getElementById("chat");
