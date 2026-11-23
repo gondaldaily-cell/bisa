@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bisa — Practice English Speaking, Online or Offline</title>
+    <meta name="description" content="Bisa is an offline-first English speaking tutor for Indonesian learners. Instant practice runs on-device with Gemini Nano; deep grammar analysis runs in the cloud with Gemini Flash — both through Firebase AI Logic." />
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Bisa <span class="tagline">— I can speak English</span></h1>
+      <p class="sub">Offline-first English speaking tutor for Indonesian learners.</p>
+      <div class="status" id="status">
+        <span id="device-badge" class="badge unknown">Checking on-device model…</span>
+        <span id="net-badge" class="badge unknown">Checking connection…</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="card" id="setup-card">
+        <h2>1. Get ready</h2>
+        <ol>
+          <li>Use <strong>Chrome on desktop, v139+</strong>.</li>
+          <li>Enable <code>chrome://flags/#prompt-api-for-gemini-nano-multimodal-input</code>, then restart Chrome.</li>
+          <li>Click <strong>“Prepare on-device model”</strong> below. This calls <code>initializeDeviceModel()</code> — it must run after a click, before any practice turn.</li>
+        </ol>
+        <button id="prepare-btn" type="button">Prepare on-device model</button>
+        <p id="prepare-note" class="note">If Nano is not available, practice still works: it falls back to the cloud model automatically.</p>
+      </section>
+
+      <section class="card">
+        <h2>2. Pick a scenario</h2>
+        <div class="lessons" id="lessons"></div>
+        <p class="note">Your goal: speak in English for 4–6 turns. The tutor replies in simple English, corrects you gently, and keeps the conversation going.</p>
+      </section>
+
+      <section class="card">
+        <h2>3. Practice</h2>
+        <div id="chat" class="chat" aria-live="polite"></div>
+        <form id="chat-form">
+          <input id="chat-input" type="text" autocomplete="off" placeholder="Type your reply in English…" />
+          <button type="submit">Send</button>
+        </form>
+        <div class="actions">
+          <button id="analyse-btn" type="button">Deep analysis (cloud)</button>
+          <button id="reset-btn" type="button" class="secondary">New conversation</button>
+        </div>
+        <div id="analysis" class="analysis" hidden></div>
+      </section>
+
+      <section class="card">
+        <h2>Your progress</h2>
+        <p id="progress">Sessions: 0 · Current streak: 0 days · Turns practised: 0</p>
+        <p class="note">Progress is stored on this device for now. Firestore sync is wired in <code>src/store.js</code> and activates once a real Firebase project config is added (see README).</p>
+      </section>
+    </main>
+
+    <footer>
+      <p>Built with Firebase AI Logic (hybrid inference: Gemini Nano on-device + Gemini Flash in cloud), App Check, Anonymous Auth, Firestore and Remote Config. Text only — no paid features.</p>
+    </footer>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
