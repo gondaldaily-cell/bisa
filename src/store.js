@@ -13,11 +13,19 @@ function todayStr(d = new Date()) {
 }
 
 // Best-effort write of the local progress to Firestore. Never throws.
-export async function syncProgress(p) {
+export async function syncProgress(p, _retried = false) {
   try {
     const db = getDb();
     const uid = getCurrentUid();
-    if (!db || !uid) return false;
+    if (!db || !uid) {
+      // Sign-in is async: a turn recorded in the first second of a session
+      // has no UID yet. Retry once after a short wait instead of dropping it.
+      if (!_retried) {
+        await new Promise((r) => setTimeout(r, 2000));
+        return syncProgress(p, true);
+      }
+      return false;
+    }
     await setDoc(doc(db, "progress", uid), { ...p, updatedAt: new Date().toISOString() }, { merge: true });
     return true;
   } catch (e) {
