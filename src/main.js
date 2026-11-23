@@ -128,7 +128,10 @@ renderProgress();
 refreshStatus();
 const app = initFirebase();
 initModels(app);
-getRoutingPolicy().then((p) => console.log("Routing policy:", p));
+getRoutingPolicy().then((p) => {
+  setRoutingPolicy(p);
+  console.log("Routing policy:", p);
+});
 // Pull any progress saved from another device. Anonymous sign-in is async,
 // so retry once after a few seconds in case the UID wasn't ready at boot.
 loadRemoteProgress().then((p) => { if (p) renderProgress(); });
