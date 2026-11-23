@@ -17,7 +17,7 @@
 import { getAI, getGenerativeModel, GoogleAIBackend, InferenceMode } from "firebase/ai";
 import { isConfigured } from "./firebase.js";
 
-const CLOUD_MODEL = "gemini-3.8-flash";
+const CLOUD_MODEL = "gemini-3.5-flash-lite";
 
 let practiceModel = null; // PREFER_ON_DEVICE: Nano when available, else cloud
 let cloudModel = null; // PREFER_IN_CLOUD: deep analysis
