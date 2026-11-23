@@ -69,8 +69,14 @@ export function onDeviceAvailable() {
 
 function buildPracticePrompt({ lesson, transcript }) {
   const history = transcript.map((t) => `${t.role === "user" ? "Learner" : "Tutor"}: ${t.text}`).join("\n");
+  const level =
+    routingPolicy.difficulty === "advanced"
+      ? "intermediate to advanced level"
+      : routingPolicy.difficulty === "intermediate"
+        ? "intermediate level"
+        : "beginner level";
   return [
-    "You are Bisa, a friendly English speaking tutor for an Indonesian learner (beginner level).",
+    `You are Bisa, a friendly English speaking tutor for an Indonesian learner (${level}).`,
     `Scenario: ${lesson.title} — ${lesson.goal}`,
     "Reply in simple English (short sentences, everyday words).",
     "Keep the conversation going with one follow-up question.",
