@@ -54,7 +54,12 @@ export function initFirebase() {
     isTokenAutoRefreshEnabled: true,
   });
   db = getFirestore(app);
-  signInAnonymously(getAuth(app)).catch((e) => console.warn("Anonymous sign-in failed:", e));
+  // Flush any progress recorded before sign-in finished: syncProgress()
+  // silently skips when there's no UID yet, so without this the first
+  // turns of a session would never reach Firestore.
+  signInAnonymously(getAuth(app))
+    .then(() => import("./store.js").then((s) => s.syncProgress(s.loadProgress())))
+    .catch((e) => console.warn("Anonymous sign-in failed:", e));
   return app;
 }
 
