@@ -94,8 +94,12 @@ function buildPracticePrompt({ lesson, transcript }) {
 // inference source from response.inferenceSource ("ON_DEVICE" / "IN_CLOUD").
 export async function practiceTurn({ lesson, transcript }) {
   const prompt = buildPracticePrompt({ lesson, transcript });
-  if (!practiceModel) return demoTurn(transcript);
-  const result = await practiceModel.generateContent(prompt);
+  // Remote Config can force the cloud model for practice (e.g. when the
+  // on-device model misbehaves) without shipping a new build.
+  const model =
+    routingPolicy.practice_mode === "prefer_in_cloud" && cloudModel ? cloudModel : practiceModel;
+  if (!model) return demoTurn(transcript);
+  const result = await model.generateContent(prompt);
   const text = result.response.text();
   const source = result.response.inferenceSource;
   const route = source === "ON_DEVICE" ? "on-device (confirmed)" : source === "IN_CLOUD" ? "cloud (confirmed fallback)" : "unknown route";
