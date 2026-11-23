@@ -22,6 +22,17 @@ const CLOUD_MODEL = "gemini-3.5-flash-lite";
 let practiceModel = null; // PREFER_ON_DEVICE: Nano when available, else cloud
 let cloudModel = null; // PREFER_IN_CLOUD: deep analysis
 
+// Routing policy from Remote Config (defaults until the fetch resolves).
+// main.js calls setRoutingPolicy() once the fetch completes.
+let routingPolicy = { practice_mode: "prefer_on_device", difficulty: "beginner" };
+export function setRoutingPolicy(p) {
+  if (!p) return;
+  routingPolicy = {
+    practice_mode: p.practice_mode || routingPolicy.practice_mode,
+    difficulty: p.difficulty || routingPolicy.difficulty,
+  };
+}
+
 export function initModels(app) {
   if (!app || !isConfigured()) return false;
   const ai = getAI(app, { backend: new GoogleAIBackend() });
